@@ -30,8 +30,9 @@ def read_prices(filename):
                 price_dict[row[0]] = float(row[1])
         except IndexError as err:
             print(
-                f'Row {i} does not have the right format\n'
-                f'Error message: {err}'
+                f'\n\nread_prices():'
+                f'\nRow {i} does not have the right format'
+                f'\nError message: {err}\n'
             )
         return price_dict
 
