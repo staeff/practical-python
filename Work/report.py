@@ -2,6 +2,7 @@
 #
 # Exercise 2.4
 import csv
+from pprint import pprint
 import sys
 
 def read_portfolio(filename):
@@ -39,7 +40,7 @@ if __name__ == '__main__':
     else:
         filename = 'Data/portfolio.csv'
     portfolio = read_portfolio(filename)
-    print(portfolio)
+    pprint(portfolio)
 
     total = compute_total(portfolio)
     print(f'Total value of the portfolio: {total}$')
