@@ -21,6 +21,20 @@ def read_portfolio(filename):
                       f'\nErrormessage: {err}')
     return portfolio
 
+def read_prices(filename):
+    with open(filename) as csvfile:
+        price_dict = {}
+        reader = csv.reader(csvfile)
+        try:
+            for i, row in enumerate(reader, 1):
+                price_dict[row[0]] = float(row[1])
+        except IndexError as err:
+            print(
+                f'Row {i} does not have the right format\n'
+                f'Error message: {err}'
+            )
+        return price_dict
+
 def compute_total(portfolio):
     """Compute total portfolio value
 
@@ -44,3 +58,6 @@ if __name__ == '__main__':
 
     total = compute_total(portfolio)
     print(f'Total value of the portfolio: {total}$')
+
+    price_file = 'Data/prices.csv'
+    prices = read_prices(price_file)
