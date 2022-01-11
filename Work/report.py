@@ -35,17 +35,18 @@ def read_prices(filename):
             )
         return price_dict
 
-def compute_total(portfolio):
-    """Compute total portfolio value
+def compute_value(portfolio, prices):
+    """Compute portfolio value
 
-        portfolio: list of dicts containing stocks
-                   in format (name, amount_shares, price)
+        :input: portfolio: list of dicts containing stocks
+                in format (name, amount_shares, price)
+                prices: dictionary of price changes
 
         :return: total - total value as int
     """
     total = 0.0
     for item in portfolio:
-        total += item['shares']*item['price']
+        total += item['shares'] * prices[item['name']]
     return total
 
 if __name__ == '__main__':
@@ -56,8 +57,8 @@ if __name__ == '__main__':
     portfolio = read_portfolio(filename)
     pprint(portfolio)
 
-    total = compute_total(portfolio)
-    print(f'Total value of the portfolio: {total}$')
-
     price_file = 'Data/prices.csv'
     prices = read_prices(price_file)
+
+    portfolio_value = compute_value(portfolio, prices)
+    print(f'Current value of the portfolio: ${portfolio_value}')
