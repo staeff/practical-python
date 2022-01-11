@@ -11,8 +11,9 @@ def read_portfolio(filename):
         reader = csv.DictReader(csvfile)
         for row in reader:
             try:
-                holding = (row['name'], int(row['shares']), float(row['price']))
-                portfolio.append(holding)
+                row['shares'] = int(row['shares'])
+                row['price'] = float(row['price'])
+                portfolio.append(row)
             except ValueError as err:
                 print(f'Invalid line at name {row["name"]}'
                       f'\nThe line is discarded'
@@ -22,14 +23,14 @@ def read_portfolio(filename):
 def compute_total(portfolio):
     """Compute total portfolio value
 
-        portfolio: list of tuples containing stocks
+        portfolio: list of dicts containing stocks
                    in format (name, amount_shares, price)
 
         :return: total - total value as int
     """
     total = 0.0
-    for _, shares, price in portfolio:
-        total += shares*price
+    for item in portfolio:
+        total += item['shares']*item['price']
     return total
 
 if __name__ == '__main__':
