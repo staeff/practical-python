@@ -50,6 +50,25 @@ def compute_value(portfolio, prices):
         total += item['shares'] * prices[item['name']]
     return total
 
+def make_report(portfolio, prices):
+    """Use price data to compute value of portfolio stocks
+
+        :input: portfolio: data as dict (name, shares, price)
+                price: dict with price changes of stocks
+
+        :return: list of tuples containing the rows name,
+                 share, price, change
+    """
+    report = []
+    for row in portfolio:
+        stock_name = row['name']
+        curr_price = prices[stock_name]
+        change = round((curr_price - row['price']),2)
+        report.append((stock_name, row['shares'], curr_price, change))
+
+    return report
+
+
 if __name__ == '__main__':
     if len(sys.argv) == 2:
         filename = sys.argv[1]
@@ -63,3 +82,7 @@ if __name__ == '__main__':
 
     portfolio_value = compute_value(portfolio, prices)
     print(f'Current value of the portfolio: ${portfolio_value}')
+
+    report = make_report(portfolio, prices)
+    for r in report:
+        print(r)
