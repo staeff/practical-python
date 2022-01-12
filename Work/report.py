@@ -74,7 +74,8 @@ def print_report(report, header):
     l = ''.join(['{:_<10} '.format('') for i in range(4)])
     output = f'{h}\n{l}\n'
     for name, shares, price, change in report:
-        output += (f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}\n')
+        price_in_dollar = f'${price:.2f}'
+        output += (f'{name:>10s} {shares:>10d} {price_in_dollar:>10} {change:>10.2f}\n')
 
     print(output)
 
