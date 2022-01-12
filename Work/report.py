@@ -68,6 +68,17 @@ def make_report(portfolio, prices):
 
     return report
 
+def print_report(report, header):
+    """Print out the portfolio report nicely formatted"""
+    h = ''.join([f'{i:>10} ' for i in header])
+    l = ''.join(['{:_<10} '.format('') for i in range(4)])
+    output = f'{h}\n{l}\n'
+    for name, shares, price, change in report:
+        output += (f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}\n')
+
+    print(output)
+
+
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:
@@ -84,5 +95,6 @@ if __name__ == '__main__':
     print(f'Current value of the portfolio: ${portfolio_value}')
 
     report = make_report(portfolio, prices)
-    for name, shares, price, change in report:
-        print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
+
+    headers = ('Name', 'Shares', 'Price', 'Change')
+    print_report(report, headers)
