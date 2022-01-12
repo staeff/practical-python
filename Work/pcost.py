@@ -6,11 +6,11 @@ def portfolio_cost(filename):
     total_cost = 0
     with open(filename) as csvfile:
         reader = csv.DictReader(csvfile)
-        for row in reader:
+        for rowno, row in enumerate(reader):
             try:
                 total_cost +=  int(row['shares']) * float(row['price'])
             except ValueError as err:
-                print(f'Invalid line at name {row["name"]}'
+                print(f'Row {rowno}: Bad row: {row}'
                       f'\nThe line is not used in the computation of Total cost'
                       f'\nErrormessage: {err}')
     return total_cost
