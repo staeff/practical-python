@@ -9,12 +9,21 @@ def read_portfolio(filename):
     """Read csv file with stock portfolio and return the list of stocks"""
     portfolio = []
     with open(filename) as csvfile:
-        reader = csv.DictReader(csvfile)
+        reader = csv.reader(csvfile)
+        headers = next(reader)
+        # Fill select with field names if you only want a subset of the data
+        # For now we take all
+        select = headers
+        types = [str, int, float]
+        indices = [ headers.index(colname) for colname in select ]
+
         for row in reader:
             try:
-                row['shares'] = int(row['shares'])
-                row['price'] = float(row['price'])
-                portfolio.append(row)
+                # dict-comprehension
+                record = { colname: row[index] for colname, index in zip(select, indices) }
+                record['shares'] = int(record['shares'])
+                record['price'] = float(record['price'])
+                portfolio.append(record)
             except ValueError as err:
                 print(f'Invalid line at name {row["name"]}'
                       f'\nThe line is discarded'
