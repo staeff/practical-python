@@ -23,7 +23,7 @@ def type_conversion(type_list, row):
     converted = [func(val) for func, val in type_row]
     return converted
 
-def read_portfolio(filename):
+def read_portfolio(filename, type_list=[]):
     """Read csv file with stock portfolio and return the list of stocks"""
     portfolio = []
     with open(filename) as csvfile:
@@ -32,7 +32,6 @@ def read_portfolio(filename):
         # Fill select with field names if you only want a subset of the data
         # For now we take all
         select = headers
-        type_list = [str, int, float]
         indices = [ headers.index(colname) for colname in select ]
         for row in reader:
             try:
@@ -111,19 +110,30 @@ def print_report(report, header):
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:
-        filename = sys.argv[1]
+        param = sys.argv[1]
     else:
-        filename = 'Data/portfolio.csv'
-    portfolio = read_portfolio(filename)
+        type_list = [str, int, float]
+        param = 'Data/portfolio.csv'
+    if param == 'missing':
+        filename = 'Data/missing.csv'
+    elif param == 'dowstocks':
+        type_list = [str, float, str, str, float, float, float, float, int]
+        filename = 'Data/dowstocks.csv'
+    else:
+        filename = param
+    portfolio = read_portfolio(filename, type_list)
     pprint(portfolio)
 
-    price_file = 'Data/prices.csv'
-    prices = read_prices(price_file)
+    # The following code assumes a shares column,
+    # which might not exist
+    if filename == 'Data/portfolio.csv':
+        price_file = 'Data/prices.csv'
+        prices = read_prices(price_file)
 
-    portfolio_value = compute_value(portfolio, prices)
-    print(f'Current value of the portfolio: ${portfolio_value}')
+        portfolio_value = compute_value(portfolio, prices)
+        print(f'Current value of the portfolio: ${portfolio_value}')
 
-    report = make_report(portfolio, prices)
+        report = make_report(portfolio, prices)
 
-    headers = ('Name', 'Shares', 'Price', 'Change')
-    print_report(report, headers)
+        headers = ('Name', 'Shares', 'Price', 'Change')
+        print_report(report, headers)
