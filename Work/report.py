@@ -5,6 +5,24 @@ import csv
 from pprint import pprint
 import sys
 
+def type_conversion(type_list, row):
+    """Convert values of a row into defined types
+
+        :input: type_list - list of python functions to coerce
+                types, e.g. [str, int, float]
+                row - list of values all strings as they are
+                loaded from csv, e.g. ['A', '1', '1']
+        return: update row with converted values
+
+    >>> type_list = [str, int, float]
+    >>> row = ['a', '1', '1']
+    >>> type_conversion(type_list, row)
+    ['a', 1, 1.0]
+    """
+    type_row = list(zip(type_list, row))
+    converted = [func(val) for func, val in type_row]
+    return converted
+
 def read_portfolio(filename):
     """Read csv file with stock portfolio and return the list of stocks"""
     portfolio = []
@@ -14,15 +32,13 @@ def read_portfolio(filename):
         # Fill select with field names if you only want a subset of the data
         # For now we take all
         select = headers
-        types = [str, int, float]
+        type_list = [str, int, float]
         indices = [ headers.index(colname) for colname in select ]
-
         for row in reader:
             try:
+                row = type_conversion(type_list, row)
                 # dict-comprehension
                 record = { colname: row[index] for colname, index in zip(select, indices) }
-                record['shares'] = int(record['shares'])
-                record['price'] = float(record['price'])
                 portfolio.append(record)
             except ValueError as err:
                 print(f'Invalid line at name {row["name"]}'
