@@ -38,7 +38,9 @@ def read_portfolio(filename):
             try:
                 row = type_conversion(type_list, row)
                 # dict-comprehension
-                record = { colname: row[index] for colname, index in zip(select, indices) }
+                # record = { colname: row[index] for colname, index in zip(select, indices) }
+                # Do it all in on dict comprehension just to show of. The line above is better, I'd say
+                record = { name: func(row[index]) for name, func, index in zip(select, type_list, indices) }
                 portfolio.append(record)
             except ValueError as err:
                 print(f'Invalid line at name {row["name"]}'
