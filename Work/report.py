@@ -45,10 +45,11 @@ def compute_value(portfolio, prices):
 
         :return: total - total value as int
     """
-    total = 0.0
-    for item in portfolio:
-        total += item['shares'] * prices[item['name']]
-    return total
+
+    # This is an example of map-reduce. The list comprehension is mapping
+    # an operation across the list. The sum() function is performing a
+    # reduction across the result.
+    return sum([s['shares'] * prices[s['name']] for s in portfolio])
 
 def make_report(portfolio, prices):
     """Use price data to compute value of portfolio stocks
